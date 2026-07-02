@@ -39,8 +39,8 @@ function M.execute_request(opts)
     vim.notify("Llama: Generating...", vim.log.levels.INFO)
 
     api.send_chat(
-        M.config,
-        { { role = "system", content = M.config.system_prompt }, { role = "user", content = user_prompt } },
+        config.options,
+        { { role = "system", content = config.options.system_prompt }, { role = "user", content = user_prompt } },
         function(token) stream.append(token) end,
         function()
             vim.notify("Llama generation complete.", vim.log.levels.INFO)
