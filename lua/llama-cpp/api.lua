@@ -44,7 +44,7 @@ function M.send_chat(config, messages, on_chunk, on_complete)
                         -- Flattened extraction path using safe navigation checks
                         if ok and parsed.choices and parsed.choices[1] then
                             local delta = parsed.choices[1].delta
-                            if delta and delta.content and #delta.content > 0 then
+                            if delta and type(delta.content) == "string" and #delta.content > 0 then
                                 on_chunk(delta.content)
                             end
                         end
@@ -53,15 +53,18 @@ function M.send_chat(config, messages, on_chunk, on_complete)
             end
         end,
     }, function(obj)
+        vim.schedule( function()
         -- Connection execution finished
-        if obj.code ~= 0 then
-            vim.notify("curl failed with code " .. obj.code .. "\n" .. (obj.stderr or ""), vim.log.levels.ERROR)
-        end
+            if obj.code ~= 0 then
+                vim.notify("curl failed with code " .. obj.code .. "\n" .. (obj.stderr or ""), vim.log.levels.ERROR)
+            end
 
-        if not has_completed then
-            has_completed = true
-            on_complete()
-        end
-    end)
+            if not has_completed then
+                has_completed = true
+                on_complete()
+                end
+            end)
+        end)
 end
+
 return M
