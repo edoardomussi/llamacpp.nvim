@@ -47,7 +47,7 @@ function M.create_preview(orig_win, orig_buf, ai_lines, ft, opts)
     -- Determine optimal split axis based on target window metrics
     local width = vim.api.nvim_win_get_width(target_win)
     local height = vim.api.nvim_win_get_height(target_win)
-    local split_direction = width > (height * 2) and "right" or "below"
+    local split_direction = width > (height * 2.2) and "right" or "below"
 
     -- ASYNC WIN SPAWN: Instantiate the split relative to target_win without entering it
     local scratch_win = vim.api.nvim_open_win(scratch_buf, false, {
